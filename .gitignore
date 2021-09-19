@@ -2,3 +2,9 @@ __pycache__/
 .vscode/
 spec/
 env/
+
+# env file
+.env
+
+# misc file
+*.local.txt

@@ -12,7 +12,7 @@ from controller import main
 
 # database
 from shared import db
-from model import *
+# from model import *
 
 
 def create_app(test_config=None):

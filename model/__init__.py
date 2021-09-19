@@ -13,8 +13,8 @@ class Vendor(db.Model):
     release_date = db.Column(db.DateTime, nullable=False)
 
     # relationship
-    my_game = db.relationship('Mygame', backref='Vendor', lazy=True, cascade='all, delete-orphan')
-    game_vendor = db.relationship('Game', backref='Vendor', lazy=True, cascade='all, delete-orphan')
+    my_game = db.relationship('MyGame', backref='Vendor', lazy=True, cascade='all, delete-orphan')
+    game_lists = db.relationship('Game', backref='Vendor', lazy=True, cascade='all, delete-orphan')
 
 
 class Game(db.Model):
@@ -31,7 +31,7 @@ class Game(db.Model):
     vendor = db.Column(db.Integer, db.ForeignKey('Vendor.id'), nullable=False)
 
     # relationship
-    my_game = db.relationship('Mygame', backref='Game', lazy=True, cascade='all, delete-orphan')
+    my_game = db.relationship('MyGame', backref='Game', lazy=True, cascade='all, delete-orphan')
 
 
 class MyGame(db.Model):
@@ -56,4 +56,4 @@ class User(db.Model):
     picture = db.Column(db.String(255), nullable=False, unique=True)
 
     # relationship
-    my_game = db.relationship('Mygame', backref='Vendor', lazy=True, cascade='all, delete-orphan')
+    my_game = db.relationship('MyGame', backref='User', lazy=True, cascade='all, delete-orphan')

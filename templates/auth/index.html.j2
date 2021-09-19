@@ -9,5 +9,39 @@
 {% block t_script %}
 <script>
     console.log('testing...')
+
+    /*
+    *
+    *
+    * trying to send back catched Auth0 token to server
+    *
+    *
+    */
+    try {
+        let a = document.location.hash
+        let b = a.replace('#access_token=', 'access_token=')
+        let c = b.split('&')
+
+        fetch('/auth/token', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                token: c[0].replace('access_token=', ''),
+            })
+        })
+            .then(response => response.json())
+            .then((data) => {
+                if (data.literal_status === 'redirect') {
+                    location.replace(data.redirect)
+                }
+            }).catch((err) => {
+                console.log(err)
+                alert('something went error check clog')
+            })
+            
+
+    }catch (err) {}
 </script>
 {% endblock  %}
