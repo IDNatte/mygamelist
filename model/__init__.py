@@ -1,3 +1,4 @@
+from .model_helper import random_id_generator
 from shared import db
 
 
@@ -42,8 +43,38 @@ class MyGame(db.Model):
     owner = db.Column(db.String, db.ForeignKey('Auth0user.id'), nullable=False)
     play_status = db.Column(db.Boolean, default=False)
     purchased_on = db.Column(db.DateTime, nullable=False)
-    game = db.Column(db.Integer, db.ForeignKey('Game.id'), nullable=False)
-    vendor = db.Column(db.Integer, db.ForeignKey('Vendor.id'), nullable=False)
+    game = db.Column(db.Integer, db.ForeignKey('Game.id'), nullable=False, unique=True)
+    vendor = db.Column(db.Integer, db.ForeignKey('Vendor.id'), nullable=False, unique=True)
+
+    # serializer
+    def __init__(self, owner, purchased_on, game, vendor):
+        self.owner = owner
+        self.purchased_on = purchased_on
+        self.game = game
+        self.vendor = vendor
+
+    def add(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def edit(self):
+        db.session.commit()
+
+    def update(self):
+        db.session.commit()
+
+    def remove(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    def get(self):
+        return {
+            'owner': self.owner,
+            'purchased_on': self.purchased_on,
+            'play_status': self.play_status,
+            'game': self.game,
+            'vendor': self.vendor
+        }
 
 
 class User(db.Model):
@@ -57,3 +88,23 @@ class User(db.Model):
 
     # relationship
     my_game = db.relationship('MyGame', backref='User', lazy=True, cascade='all, delete-orphan')
+
+
+class SystemAuthKey(db.Model):
+    # pylint: disable=maybe-no-member
+    __tablename__ = 'sysAuth0TokenStorage'
+
+    id = db.Column(db.String(200), primary_key=True, nullable=False, default=random_id_generator)
+    token = db.Column(db.String, nullable=False)
+    expiration = db.Column(db.DateTime, nullable=False)
+
+    def __repr__(self):
+        return str(f'{self.expiration}')
+
+    def __init__(self, token, expiration):
+        self.token = token
+        self.expiration = expiration
+
+    def save(self):
+        db.session.add(self)
+        db.session.commit()

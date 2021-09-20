@@ -8,8 +8,7 @@ from flask import abort
 
 from .controller_helper import Auth0Identifier
 from .controller_helper import Auth0Validator
-from .controller_helper import ServerError
-from .controller_helper import AuthError
+
 
 from model import User
 from shared import db
@@ -66,16 +65,3 @@ def get_token():
             abort(422)
     else:
         abort(405)
-
-
-# Error Handler
-@main.errorhandler(405)
-@main.errorhandler(422)
-@main.errorhandler(AuthError)
-@main.errorhandler(ServerError)
-def main_errorhandler(error):
-    return jsonify({
-        'status': error.name,
-        'code': error.code,
-        'detail': error.description
-    }), error.code

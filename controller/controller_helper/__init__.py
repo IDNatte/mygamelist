@@ -6,9 +6,10 @@ from functools import wraps
 from flask import request
 from jose import jwt
 import requests
+import datetime
 
-# debug
-# import pprint
+from model import SystemAuthKey
+from shared import db
 
 
 class AuthError(Exception):
@@ -65,8 +66,8 @@ def Auth0Validator(token):
             try:
                 payload = jwt.decode(token,
                                      rsa_key,
-                                     algorithms=current_app.config.get('ALGORITHMS'),
-                                     audience=current_app.config.get('API_AUDIENCE'),
+                                     algorithms=current_app.config.get('AUTH0_ALGORITHMS'),
+                                     audience=current_app.config.get('AUTH0_API_AUDIENCE'),
                                      issuer=url)
 
                 return payload
@@ -93,46 +94,69 @@ def Auth0Identifier(user):
 
     non-decorator Auth0 user identificator function
     """
+    # pylint: disable=maybe-no-member
 
-    client = current_app.config.get('AUTH0_CLIENT')
-    secret = current_app.config.get('AUTH0_SECRET')
-    aud = 'https://informal.us.auth0.com/api/v2/'
+    current_time = datetime.datetime.now()
     url = current_app.config.get('AUTH0_DOMAIN')
-    gt = 'client_credentials'
 
-    payload = {
-        "client_id": client,
-        "client_secret": secret,
-        "audience": aud,
-        "grant_type": gt
-    }
+    token_query = SystemAuthKey.query
+    expired_token = token_query.filter(SystemAuthKey.expiration <= current_time)
+    token = token_query.order_by(SystemAuthKey.expiration.desc())\
+        .filter(SystemAuthKey.expiration >= current_time)\
+        .first()
 
-    authorize = requests.post(f'{url}oauth/token', data=payload)
+    if token:
+        counter = token_query.order_by(SystemAuthKey.expiration.desc()).count()
+        user = requests.get(f'{url}api/v2/users/{user}', headers={
+            "authorization": f'Bearer {token.token}'
+        })
 
-    if authorize.status_code == 200:
-        token = authorize.json().get('access_token')
-        token_type = authorize.json().get('token_type')
+        if counter > 1:
+            expired_token.delete()
+            db.session.commit()
 
-        server_headers = {
-            "authorization": f'{token_type} {token}'
-        }
-
-        user = requests.get(f'{url}api/v2/users/{user}', headers=server_headers)
-
-        user_payload = {
+        return {
             "user_id": user.json().get('identities')[0].get('user_id'),
             "username": user.json().get('nickname'),
             "email": user.json().get('email'),
             "picture": user.json().get('picture')
         }
 
-        return user_payload
     else:
-        authorize.status_code
-        raise ServerError('Server Fault',
-                          'Unrecognized server fault',
-                          f'Server transaction error {authorize.status_code}',
-                          500)
+        authorize = requests.post(f'{url}oauth/token', data={
+            "client_id": current_app.config.get('AUTH0_CLIENT'),
+            "client_secret": current_app.config.get('AUTH0_SECRET'),
+            "audience": current_app.config.get('AUTH0_SYSTEM_AUDIENCE'),
+            "grant_type": current_app.config.get('AUTH0_GRANT_TYPE')
+        })
+
+        if authorize.status_code == 200:
+            token = authorize.json().get('access_token')
+            token_type = authorize.json().get('token_type')
+
+            token_time = datetime.timedelta(seconds=authorize.json().get('expires_in'))
+            current_time = datetime.datetime.now()
+            token_expire_time = current_time + token_time
+
+            securityToken = SystemAuthKey(token=token, expiration=token_expire_time)
+            securityToken.save()
+
+            user = requests.get(f'{url}api/v2/users/{user}', headers={
+                "authorization": f'{token_type} {securityToken.token}'
+            })
+
+            return {
+                "user_id": user.json().get('identities')[0].get('user_id'),
+                "username": user.json().get('nickname'),
+                "email": user.json().get('email'),
+                "picture": user.json().get('picture')
+            }
+
+        else:
+            raise ServerError('Server Fault',
+                              'Unrecognized server fault',
+                              f'Server transaction error {authorize.status_code}',
+                              500)
 
 
 def auth_header_parser(headers):

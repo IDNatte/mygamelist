@@ -5,6 +5,7 @@ from flask import Flask
 # API endpoint
 from controller import public_api
 from controller import admin_api
+from controller import error_api
 from controller import user_api
 
 # common endpoint
@@ -30,6 +31,7 @@ def create_app(test_config=None):
     # registering blueprint
     app.register_blueprint(public_api.public)
     app.register_blueprint(admin_api.admin)
+    app.register_blueprint(error_api.error)
     app.register_blueprint(user_api.user)
     app.register_blueprint(main)
 

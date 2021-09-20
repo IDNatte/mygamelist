@@ -108,7 +108,7 @@ def public_vendor_detail(vendor_id):
 
 
 # Error Handler for blueprint
-@public.errorhandler(404)
+@public.app_errorhandler(404)
 def public_errorhandler(error):
     return jsonify({
         'status': error.name,
