@@ -16,7 +16,7 @@ from shared import db
 # from model import *
 
 
-def create_app(test_config=None):
+def init_app(test_config=None):
     # pylint: disable=assignment-from-no-return
 
     # initialize apps
