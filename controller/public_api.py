@@ -67,7 +67,7 @@ def public_game_detail(game_id):
             }
         })
     else:
-        abort(404, description='Resource not found')
+        abort(404, 'No data founded')
 
 
 @public.route('/api/vendors')
@@ -106,14 +106,4 @@ def public_vendor_detail(vendor_id):
         })
 
     else:
-        abort(404, description='Resource not found')
-
-
-# Error Handler for blueprint
-@public.app_errorhandler(404)
-def public_errorhandler(error):
-    return jsonify({
-        'status': error.name,
-        'code': error.code,
-        'detail': error.description
-    }), error.code
+        abort(404, 'No data founded')

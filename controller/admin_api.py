@@ -1,5 +1,4 @@
 from dateutil import parser as dt_ps
-from json import JSONDecodeError
 from flask import Blueprint
 from flask import jsonify
 from flask import request
@@ -92,7 +91,7 @@ def admin_vendor_add(user_id):
                 'content': add_vendor.get()
             }), 201
 
-        except (JSONDecodeError, ValueError, KeyError):
+        except (ValueError, KeyError):
             abort(422, 'Invalid request body')
 
         except TypeError:
@@ -132,7 +131,7 @@ def admin_vendor_edit_delete(user_id, vendor_id):
                     'content': vendor.get()
                 })
 
-            except (JSONDecodeError, ValueError, KeyError):
+            except (ValueError, KeyError):
                 abort(422, 'Invalid request body')
 
             except TypeError:
@@ -153,7 +152,6 @@ def admin_vendor_edit_delete(user_id, vendor_id):
 
         else:
             abort(404, 'No data founded')
-        return jsonify({'test': 'test'})
 
     else:
         abort(405)
@@ -180,9 +178,9 @@ def admin_game_add(user_id):
             return ({
                 'literal_status': 'saved',
                 'content': add_game.get()
-            })
+            }), 201
 
-        except (JSONDecodeError, ValueError, KeyError):
+        except (ValueError, KeyError):
             abort(422, 'Invalid request body')
 
         except TypeError:
@@ -237,7 +235,7 @@ def admin_game_edit_delete(user_id, game_id):
             })
 
         else:
-            abort(403, 'Nothing in body')
+            abort(404, 'Nothing in body')
 
     else:
         abort(405)

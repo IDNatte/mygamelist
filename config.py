@@ -16,7 +16,7 @@ if os.environ.get('FLASK_ENV') == 'development':
     SECRET_KEY = dotenv_values('.env').get('SECRET_KEY')
 
     # Auth0 Config
-    AUTH0_DOMAIN = dotenv_values('.env').get('AUTH0_AUTHENTICATION_URL')
+    AUTH0_DOMAIN = dotenv_values('.env').get('AUTH0_DOMAIN')
     AUTH0_CLIENT = dotenv_values('.env').get('AUTH0_CLIENT_ID')
     AUTH0_SECRET = dotenv_values('.env').get('AUTH0_CLIENT_SECRET')
 

@@ -201,7 +201,7 @@ def authenticate(f):
             else:
                 return False
         except KeyError:
-            raise AuthError('Unauthoriozed', 'Broken Authorization header', 401)
+            raise AuthError('Unauthorized', 'Broken Authorization header', 401)
 
     return authenticate_decorator
 

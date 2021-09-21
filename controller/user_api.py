@@ -1,5 +1,4 @@
 from dateutil import parser as dt_ps
-from json import JSONDecodeError
 from flask import Blueprint
 from flask import jsonify
 from flask import request
@@ -92,7 +91,7 @@ def user_gamelist(user_id):
                 'list_id': add_my_game.id
             }), 201
 
-        except (JSONDecodeError, ValueError, KeyError):
+        except (ValueError, KeyError):
             abort(422, 'Invalid request body')
 
         except TypeError:
@@ -125,7 +124,7 @@ def user_edit_delete_gamelist(user_id, my_game_id):
             else:
                 abort(404, 'No data founded')
 
-        except (JSONDecodeError, ValueError, KeyError):
+        except (ValueError, KeyError):
             abort(422, 'Invalid request body')
 
         except TypeError:
