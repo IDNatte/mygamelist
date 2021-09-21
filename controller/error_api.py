@@ -7,6 +7,7 @@ from .controller_helper import AuthError
 error = Blueprint('error_endpoint', __name__)
 
 
+@error.app_errorhandler(400)
 @error.app_errorhandler(403)
 @error.app_errorhandler(405)
 @error.app_errorhandler(409)

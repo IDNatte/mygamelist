@@ -1,5 +1,5 @@
-from sqlalchemy.exc import IntegrityError
 from dateutil import parser as dt_ps
+from json import JSONDecodeError
 from flask import Blueprint
 from flask import jsonify
 from flask import request
@@ -13,18 +13,13 @@ from model import Vendor
 from model import User
 from model import Game
 
-
-# debug
-# import datetime
-
-
 user = Blueprint('user_endpoint', __name__)
 ITEM_LIMIT = 10
 
 
 @user.route('/api/user/me')
 @authenticate
-@authorize(permission='get:user-info')
+@authorize(permission='get:me')
 def user_index(user_id):
     user = User.query.get(user_id)
     my_games_id = [game.id for game in user.my_game]
@@ -54,8 +49,8 @@ def user_index(user_id):
 
 @user.route('/api/user/me/games', methods=['GET', 'POST'])
 @authenticate
-@authorize(permission='get:user-game')
-@authorize(permission='post:user-game')
+@authorize(permission='get:my-game')
+@authorize(permission='post:my-game')
 def user_gamelist(user_id):
     if request.method == 'GET':
         games = MyGame.query.join(Vendor, Game).filter(MyGame.owner == user_id).all()
@@ -93,18 +88,15 @@ def user_gamelist(user_id):
             add_my_game.add()
 
             return jsonify({
-                'literal_status': 'deleted',
+                'literal_status': 'saved',
                 'list_id': add_my_game.id
             }), 201
 
-        except (ValueError, KeyError):
+        except (JSONDecodeError, ValueError, KeyError):
             abort(422, 'Invalid request body')
 
         except TypeError:
             abort(403, 'Nothing in body')
-
-        except IntegrityError:
-            abort(409, 'Data exists')
 
     else:
         abort(405)
@@ -112,8 +104,8 @@ def user_gamelist(user_id):
 
 @user.route('/api/user/me/games/<int:my_game_id>', methods=['PATCH', 'DELETE'])
 @authenticate
-@authorize(permission='patch:user-game')
-@authorize(permission='delete:user-game')
+@authorize(permission='patch:my-game')
+@authorize(permission='delete:my-game')
 def user_edit_delete_gamelist(user_id, my_game_id):
     if request.method == 'PATCH':
         try:
@@ -126,18 +118,17 @@ def user_edit_delete_gamelist(user_id, my_game_id):
                 game.update()
 
                 return jsonify({
-                    'literal_status': 'Updated',
+                    'literal_status': 'updated',
                     'content': game.get()
                 })
 
             else:
                 abort(404, 'No data founded')
 
-        except (ValueError, KeyError):
+        except (JSONDecodeError, ValueError, KeyError):
             abort(422, 'Invalid request body')
 
-        except TypeError as e:
-            print(e)
+        except TypeError:
             abort(403, 'Nothing in body')
 
     elif request.method == 'DELETE':

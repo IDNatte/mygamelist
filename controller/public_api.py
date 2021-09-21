@@ -24,6 +24,7 @@ def public_games():
 
     for x in games:
         game_lists.append({
+            'game_id': x[0].id,
             'gameName': x[0].name,
             'rating': x[0].rating,
             'price': x[0].price,
@@ -82,6 +83,7 @@ def public_vendors():
     for vendor in vendors:
         vendor_lists.append({
             'name': vendor.name,
+            'vendor_id': vendor.id
         })
 
     return jsonify({

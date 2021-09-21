@@ -9,7 +9,6 @@ from flask import abort
 from .controller_helper import Auth0Identifier
 from .controller_helper import Auth0Validator
 
-
 from model import User
 from shared import db
 
