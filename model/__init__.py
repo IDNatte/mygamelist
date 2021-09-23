@@ -144,6 +144,7 @@ class User(db.Model):
     username = db.Column(db.String(200), nullable=False, unique=True)
     email = db.Column(db.String(200), nullable=False, unique=True)
     picture = db.Column(db.String(255), nullable=False, unique=True)
+    role = db.Column(db.String(200), nullable=False)
 
     # relationship
     my_game = db.relationship('MyGame', backref='User', lazy=True, cascade='all, delete-orphan')

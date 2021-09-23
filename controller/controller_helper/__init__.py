@@ -107,7 +107,11 @@ def Auth0Identifier(user):
 
     if token:
         counter = token_query.order_by(SystemAuthKey.expiration.desc()).count()
-        user = requests.get(f'{url}api/v2/users/{user}', headers={
+        user_data = requests.get(f'{url}api/v2/users/{user}', headers={
+            "authorization": f'Bearer {token.token}'
+        })
+
+        roles = requests.get(f'{url}api/v2/users/{user}/roles', headers={
             "authorization": f'Bearer {token.token}'
         })
 
@@ -116,10 +120,11 @@ def Auth0Identifier(user):
             db.session.commit()
 
         return {
-            "user_id": user.json().get('identities')[0].get('user_id'),
-            "username": user.json().get('nickname'),
-            "email": user.json().get('email'),
-            "picture": user.json().get('picture')
+            "user_id": user_data.json().get('identities')[0].get('user_id'),
+            "username": user_data.json().get('nickname'),
+            "email": user_data.json().get('email'),
+            "picture": user_data.json().get('picture'),
+            "role": roles.json()[0].get('name')
         }
 
     else:

@@ -53,8 +53,9 @@ def get_token():
                 username = auth0_user_object.get('username')
                 email = auth0_user_object.get('email')
                 picture = auth0_user_object.get('picture')
+                role = auth0_user_object.get('role')
 
-                user = User(id=user_id, username=username, email=email, picture=picture)
+                user = User(id=user_id, username=username, email=email, picture=picture, role=role)
                 db.session.add(user)
                 db.session.commit()
 
