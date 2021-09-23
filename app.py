@@ -24,7 +24,7 @@ def init_app(test_config=None):
     app.config.from_object('config')
 
     # initialize extension
-    CORS(app, resources={r"/api/*": {"origins": "*"}})
+    # CORS(app, resources={r"/api/*": {"origins": "*"}})
     db.init_app(app)
     Migrate().init_app(app=app, db=db)
 

@@ -1,10 +1,14 @@
 from flask import Blueprint
+from flask_cors import CORS
 from flask import jsonify
 
 from .controller_helper import ServerError
 from .controller_helper import AuthError
 
 error = Blueprint('error_endpoint', __name__)
+
+# set cors in blueprint level
+CORS(error)
 
 
 @error.app_errorhandler(403)

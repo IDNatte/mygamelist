@@ -1,4 +1,5 @@
 from flask import render_template
+from flask_cors import CORS
 from flask import Blueprint
 from flask import redirect
 from flask import url_for
@@ -13,6 +14,9 @@ from model import User
 from shared import db
 
 main = Blueprint('main', __name__)
+
+# set cors in blueprint level
+CORS(main)
 
 
 @main.route('/')

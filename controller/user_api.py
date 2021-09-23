@@ -1,4 +1,5 @@
 from dateutil import parser as dt_ps
+from flask_cors import CORS
 from flask import Blueprint
 from flask import jsonify
 from flask import request
@@ -14,6 +15,9 @@ from model import Game
 
 user = Blueprint('user_endpoint', __name__)
 ITEM_LIMIT = 10
+
+# set cors in blueprint level
+CORS(user)
 
 
 @user.route('/api/user/me')

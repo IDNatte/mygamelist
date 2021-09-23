@@ -1,3 +1,4 @@
+from flask_cors import CORS
 from flask import Blueprint
 from flask import request
 from flask import jsonify
@@ -9,6 +10,9 @@ from shared import db
 
 public = Blueprint('public_endpoint', __name__)
 ITEM_LIMIT = 10
+
+# set cors in blueprint level
+CORS(public)
 
 
 @public.route('/api/gamelists')
