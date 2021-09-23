@@ -45,7 +45,8 @@ def get_token():
                 return jsonify({
                     'user_status': 'fetched',
                     'literal_status': 'redirect',
-                    'redirect': url_for('user_endpoint.user_index')
+                    'redirect': url_for('user_endpoint.user_index'),
+                    'user_level': local_user.role
                 })
 
             else:
@@ -62,7 +63,8 @@ def get_token():
                 return jsonify({
                     'user_status': 'create',
                     'literal_status': 'redirect',
-                    'redirect': url_for('user_endpoint.user_index')
+                    'redirect': url_for('user_endpoint.user_index'),
+                    'user_level': local_user.role
                 })
 
         except KeyError:
