@@ -4,7 +4,7 @@ import os
 
 
 # sqlalchemy postgresql config
-SQLALCHEMY_DATABASE_URI = 'postgresql://localhost:5432/mgl_db'
+
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 # secret key switcher
@@ -12,6 +12,7 @@ SQLALCHEMY_TRACK_MODIFICATIONS = False
 if os.environ.get('FLASK_ENV') == 'development':
     # if environment is development then use .env files
 
+    SQLALCHEMY_DATABASE_URI = 'postgresql://localhost:5432/mgl_db'
     # session config
     SECRET_KEY = dotenv_values('.env').get('SECRET_KEY')
 
@@ -31,7 +32,7 @@ else:
     # else if use environment variables instead.
 
     # use for deploying @ heroku
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DB')
     # session config
     SECRET_KEY = os.environ.get('SECRET_KEY')
 

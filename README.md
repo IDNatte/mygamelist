@@ -545,6 +545,8 @@ response : <200> Object {
 }
 ```
 
-## Flask 2.0 Bug
+## Known Issue
 
 - `TypeError: exceptions must derive from BaseException` [**referenced in here**](https://stackoverflow.com/a/68712238) for time being use `--eager-loading` flag instead to avoid raising this error in development mode, fixed in `flask 2.0.2` release.
+
+- `Database heroku` https://stackoverflow.com/a/64698899
