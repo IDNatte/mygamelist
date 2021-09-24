@@ -1,0 +1,29 @@
+{% extends "layout/main.html.j2" %}
+
+{% block title %}Login link{% endblock %}
+
+{% block style %}
+<style>
+    .login__link {
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .input__controller {
+        display: block;
+        padding-top: 20px;
+    }
+</style>
+{% endblock  %}
+
+{% block content %}
+<div class="login__link">
+    <span>Copy link bellow for login to application</span>
+    <div class="input__controller">
+        <input type="text" value="{{login_url}}" disabled/>
+    </div>
+</div>
+{% endblock %}

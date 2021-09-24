@@ -1,7 +1,7 @@
 from flask import render_template
+from flask import current_app
 from flask_cors import CORS
 from flask import Blueprint
-from flask import redirect
 from flask import url_for
 from flask import request
 from flask import jsonify
@@ -19,9 +19,15 @@ main = Blueprint('main', __name__)
 CORS(main)
 
 
-@main.route('/')
-def index():
-    return redirect('auth')
+@main.route('/login')
+def login_link():
+    domain = current_app.config.get('AUTH0_DOMAIN')
+    cid = current_app.config.get('AUTH0_APP_CLIENT')
+    audience_redir = current_app.config.get('AUTH0_API_AUDIENCE')
+
+    login_link = f'{domain}authorize?response_type=token&client_id={cid}&redirect_uri={audience_redir}auth&audience={audience_redir}'
+
+    return render_template('login/index.html.j2', login_url=login_link)
 
 
 @main.route('/auth')

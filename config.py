@@ -18,6 +18,7 @@ if os.environ.get('FLASK_ENV') == 'development':
     # Auth0 Config
     AUTH0_DOMAIN = dotenv_values('.env').get('AUTH0_DOMAIN')
     AUTH0_CLIENT = dotenv_values('.env').get('AUTH0_CLIENT_ID')
+    AUTH0_APP_CLIENT = dotenv_values('.env').get('AUTH0_APP_CLIENT')
     AUTH0_SECRET = dotenv_values('.env').get('AUTH0_CLIENT_SECRET')
 
     AUTH0_SYSTEM_AUDIENCE = dotenv_values('.env').get('AUTH0_SYSTEM_AUDIENCE')
@@ -35,6 +36,7 @@ else:
     # Auth0 Config
     AUTH0_DOMAIN = os.environ.get('AUTH0_AUTHENTICATION_URL')
     AUTH0_CLIENT = os.environ.get('AUTH0_CLIENT_ID')
+    AUTH0_APP_CLIENT = os.environ.get('AUTH0_APP_CLIENT')
     AUTH0_SECRET = os.environ.get('AUTH0_CLIENT_SECRET')
 
     AUTH0_SYSTEM_AUDIENCE = os.environ.get('AUTH0_SYSTEM_AUDIENCE')
