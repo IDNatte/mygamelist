@@ -30,6 +30,8 @@ if os.environ.get('FLASK_ENV') == 'development':
 else:
     # else if use environment variables instead.
 
+    # use for deploying @ heroku
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
     # session config
     SECRET_KEY = os.environ.get('SECRET_KEY')
 
