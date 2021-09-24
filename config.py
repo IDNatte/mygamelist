@@ -37,7 +37,7 @@ else:
     SECRET_KEY = os.environ.get('SECRET_KEY')
 
     # Auth0 Config
-    AUTH0_DOMAIN = os.environ.get('AUTH0_AUTHENTICATION_URL')
+    AUTH0_DOMAIN = os.environ.get('AUTH0_DOMAIN')
     AUTH0_CLIENT = os.environ.get('AUTH0_CLIENT_ID')
     AUTH0_APP_CLIENT = os.environ.get('AUTH0_APP_CLIENT')
     AUTH0_SECRET = os.environ.get('AUTH0_CLIENT_SECRET')
