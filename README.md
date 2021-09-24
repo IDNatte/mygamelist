@@ -202,7 +202,7 @@ the `/auth` page will testing automatically registering your account to local da
 if you accesing this via `SPA Application` you can send a post request to `/auth/token` otherwise you will be unable to accesing endpoint even you get a valid Auth0 jwt token.
 
 ```
-Server : http://127.0.0.1:8000/ or http://localhost:8000/
+Server : http://127.0.0.1:8000/ or http://localhost:8000/ or https://me-gamelist.herokuapp.com/
 
 Login page : /login
 Token Cheker : /auth/token
