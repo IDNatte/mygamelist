@@ -7,6 +7,11 @@ from flask import request
 from flask import jsonify
 from flask import abort
 
+from pygments.formatters import HtmlFormatter
+from markdown.extensions import fenced_code
+from markdown.extensions import codehilite
+from markdown import markdown
+
 from .controller_helper import Auth0Identifier
 from .controller_helper import Auth0Validator
 
@@ -17,6 +22,18 @@ main = Blueprint('main', __name__)
 
 # set cors in blueprint level
 CORS(main)
+
+
+@main.route('/')
+def index():
+    with open('README.md') as md:
+        docs = markdown(md.read(), extensions=["fenced_code", "codehilite"])
+
+    formatter = HtmlFormatter(style='colorful', full=True, cssclass="codehilite")
+    css_string = formatter.get_style_defs()
+    md_css_string = f'<style>{css_string}</style>'
+    md_template = f'{md_css_string}{docs}'
+    return md_template
 
 
 @main.route('/login')

@@ -1,6 +1,12 @@
 # My Gamelist
 
-Explore your game
+My Gamelist API is created for gamer who need to add some game list to their "playlist" or just to hunt a game title.
+
+maybe this project is not stopping in here, i have some plan to improving this API and add some sort of client in the future,
+
+My Gamelist API is just like [My Animelist](https://myanimelist.net/) some of you maybe ever heard about this web, but it is basically a web where there is a ton of anime and manga listed on there, and user is can create some sort of user playlist, readlist, or whatever it is called. so maybe in next time in future they can see what anime or manga they has been read or plan reading or watch.
+
+so back again to this application. This application using MVC-ish pattern or "Application Factory Pattern" as they call it in flask where all module is separated appropriately. such as models, controller/router/urls, and the view itself. with this pattern i think the code readability will improve a whole lot rather than using traditional flask structure, and also i just want to try something new and improving my knowledge in developing python flask with maintaining code readability.
 
 ## Requirements
 
@@ -137,6 +143,8 @@ after creating and configuring Auth0, then don't forget to copy paste the .env.e
 .env file required for set some environment variables that needed such as Auth0 Client id, app client id, Etc.
 
 after done copying and renaming .env.example, bellow is what you need to change inside .env files
+
+
 - `SECRET_KEY` set this value to a random string, you can use string randomizer from google.
 - `AUTH0_DOMAIN` set this value to define Auth0 domain, you can find it in application setting under Domain.
 - `AUTH0_CLIENT_ID` this is your management client id, **It is different** from `My Gamelist` Client_id taht you configure earlier this id needed to get your user account information, you can get it by following [this documentation](https://auth0.com/docs/security/tokens/access-tokens/get-management-api-access-tokens-for-production) step.
@@ -183,7 +191,7 @@ This server is run on port 8000 by default if you using bash script to set flask
 
 **Notice**
 
-***! (Read Flask 2.0 Bug)**
+***! (Read Known issue)**
 
 
 ## Endpoint
@@ -547,6 +555,11 @@ response : <200> Object {
 
 ## Known Issue
 
-- `TypeError: exceptions must derive from BaseException` [**referenced in here**](https://stackoverflow.com/a/68712238) for time being use `--eager-loading` flag instead to avoid raising this error in development mode, fixed in `flask 2.0.2` release.
+- `TypeError: exceptions must derive from BaseException` [**referenced in here**](https://stackoverflow.com/a/68712238) fixed in `flask 2.0.2` release.
+- [Heroku postgresql issue](https://stackoverflow.com/a/64698899)
 
-- `Database heroku` https://stackoverflow.com/a/64698899
+---
+this documentation from README.md
+
+ - reference link @ [Rendering markdown from Flask](https://dev.to/mrprofessor/rendering-markdown-from-flask-1l41)
+ - reference link @ [Simple bootstrapped markdown renderer in Flask.](https://gist.github.com/mitgr81/5391201)
